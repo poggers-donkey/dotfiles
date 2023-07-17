@@ -11,7 +11,7 @@
             inputs.nur.nixosModules.nur
 	    #inputs.stylix.homeManagerModules.stylix
 inputs.stylix.nixosModules.stylix
-inputs.base16.nixosModule
+#inputs.base16.nixosModule
   ];
 stylix.image = "/home/main/Pictures/lenin_in_smolny.png";
 stylix.base16Scheme = "${inputs.base16-schemes}/gruvbox-dark-medium.yaml";
