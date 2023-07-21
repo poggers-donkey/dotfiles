@@ -74,6 +74,101 @@ stylix.base16Scheme = "${inputs.base16-schemes}/gruvbox-dark-medium.yaml";
       };
   };
 };
+  services.throttled = {
+    enable = true;
+    extraConfig = ''
+[GENERAL]
+# Enable or disable the script execution
+Enabled: True
+# SYSFS path for checking if the system is running on AC power
+Sysfs_Power_Path: /sys/class/power_supply/AC*/online
+# Auto reload config on changes
+Autoreload: True
+
+## Settings to apply while connected to Battery power
+[BATTERY]
+# Update the registers every this many seconds
+Update_Rate_s: 30
+# Max package power for time window #1
+PL1_Tdp_W: 29
+# Time window #1 duration
+PL1_Duration_s: 28
+# Max package power for time window #2
+PL2_Tdp_W: 44
+# Time window #2 duration
+PL2_Duration_S: 0.002
+# Max allowed temperature before throttling
+Trip_Temp_C: 85
+# Set cTDP to normal=0, down=1 or up=2 (EXPERIMENTAL)
+cTDP: 0
+# Disable BDPROCHOT (EXPERIMENTAL)
+Disable_BDPROCHOT: False
+
+## Settings to apply while connected to AC power
+[AC]
+# Update the registers every this many seconds
+Update_Rate_s: 5
+# Max package power for time window #1
+PL1_Tdp_W: 44
+# Time window #1 duration
+PL1_Duration_s: 28
+# Max package power for time window #2
+PL2_Tdp_W: 44
+# Time window #2 duration
+PL2_Duration_S: 0.002
+# Max allowed temperature before throttling
+Trip_Temp_C: 95
+# Set HWP energy performance hints to 'performance' on high load (EXPERIMENTAL)
+# Uncomment only if you really want to use it
+# HWP_Mode: False
+# Set cTDP to normal=0, down=1 or up=2 (EXPERIMENTAL)
+cTDP: 0
+# Disable BDPROCHOT (EXPERIMENTAL)
+Disable_BDPROCHOT: False
+
+# All voltage values are expressed in mV and *MUST* be negative (i.e. undervolt)! 
+[UNDERVOLT.BATTERY]
+# CPU core voltage offset (mV)
+CORE: -100
+# Integrated GPU voltage offset (mV)
+GPU: -50
+# CPU cache voltage offset (mV)
+CACHE: -100
+# System Agent voltage offset (mV)
+UNCORE: 0
+# Analog I/O voltage offset (mV)
+ANALOGIO: 0
+
+# All voltage values are expressed in mV and *MUST* be negative (i.e. undervolt)!
+[UNDERVOLT.AC]
+# CPU core voltage offset (mV)
+CORE: -100
+# Integrated GPU voltage offset (mV)
+GPU: -50
+# CPU cache voltage offset (mV)
+CACHE: -100
+# System Agent voltage offset (mV)
+UNCORE: 0
+# Analog I/O voltage offset (mV)
+ANALOGIO: 0
+
+# [ICCMAX.AC]
+# # CPU core max current (A)
+# CORE: 
+# # Integrated GPU max current (A)
+# GPU: 
+# # CPU cache max current (A)
+# CACHE: 
+
+# [ICCMAX.BATTERY]
+# # CPU core max current (A)
+# CORE: 
+# # Integrated GPU max current (A)
+# GPU: 
+# # CPU cache max current (A)
+# CACHE: 
+'';
+  };
   nix = {
     gc = {
       automatic = true;
@@ -92,17 +187,9 @@ stylix.base16Scheme = "${inputs.base16-schemes}/gruvbox-dark-medium.yaml";
       ];
     };
   };
-  services.tlp = {
-    #enable=true;
-  settings = {
-    CPU_BOOST_ON_AC = 1;
-    CPU_BOOST_ON_BAT = 0;
-    CPU_SCALING_GOVERNOR_ON_AC = "performance";
-    CPU_SCALING_GOVERNOR_ON_BAT = "powersave";
-  };
-};
   environment.systemPackages = with pkgs; [
     git
+    linuxKernel.packages.linux_xanmod.cpupower
     ncdu
     neovim
     nixfmt
@@ -126,21 +213,14 @@ stylix.base16Scheme = "${inputs.base16-schemes}/gruvbox-dark-medium.yaml";
     python3Packages.xlib
     python3Packages.matplotlib
     python3Packages.numpy
-    tlp
     htop
-    #dbus-sway-environment
-    #configure-gtk
   ];
-
-
-
 
   services.pipewire = {
     enable = true;
     alsa.enable = true;
     pulse.enable = true;
   };
-
 
   # xdg-desktop-portal works by exposing a series of D-Bus interfaces
   # known as portals under a well-known name
@@ -153,9 +233,13 @@ stylix.base16Scheme = "${inputs.base16-schemes}/gruvbox-dark-medium.yaml";
     enable = true;
     wlr.enable = true;
     # gtk portal needed to make gtk apps happy
-    extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
+    extraPortals = [ pkgs.xdg-desktop-portal-gtk pkgs.xdg-desktop-portal-wlr ];
     gtkUsePortal = true;
   };
+  services.auto-cpufreq = { 
+  enable=true;
+  };
+  services.thermald.enable=true;
 
   # enable sway window manager
   programs.sway = {
@@ -284,7 +368,8 @@ stylix.base16Scheme = "${inputs.base16-schemes}/gruvbox-dark-medium.yaml";
   # Before changing this value read the documentation for this option
   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
   system.stateVersion = "22.05"; # Did you read the comment?
-  # Import the home-manager module.
+#home-manager.useUserPackages = true;
+#home-manager.useGlobalPkgs = true;
 
   home-manager.users.main = { pkgs,  ... }: {
     # New: Import a persistence module for home-manager.
@@ -370,6 +455,7 @@ stylix.base16Scheme = "${inputs.base16-schemes}/gruvbox-dark-medium.yaml";
       enable = true;
       notify = false;
     };
+    #wayland.windowManager.sway.enable=true;
 
     programs.firefox = {
       enable = true;
@@ -808,7 +894,7 @@ stylix.base16Scheme = "${inputs.base16-schemes}/gruvbox-dark-medium.yaml";
               "7" = "";
               "9" = "";
               "10" = "";
-              focused = "";
+            #focused = "";
               urgent = "";
               default = "";
             };
@@ -837,7 +923,7 @@ stylix.base16Scheme = "${inputs.base16-schemes}/gruvbox-dark-medium.yaml";
           "battery#bat0" = battery { name = "BAT0"; };
           "battery#bat1" = battery { name = "BAT1"; };
           network = {
-            format-wifi = "{essid} ({signalStrength}%) ";
+            format-wifi = "({signalStrength}%) ";
             format-ethernet = "Ethernet ";
             format-linked = "Ethernet (No IP) ";
             format-disconnected = "Disconnected ";
