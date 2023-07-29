@@ -12,6 +12,7 @@
 #    hyprland.url = "github:hyprwm/Hyprland";
     nixos-hardware.url = "github:NixOS/nixos-hardware/master";
     stylix.url = "github:danth/stylix";
+    nur-comb.url = "github:nix-community/nur-combined";
 #     base16.url = github:SenchoPens/base16.nix;
 
 base16-schemes = { url = github:TotalChaos05/base16-schemes; flake = false; };
@@ -19,7 +20,7 @@ base16-schemes = { url = github:TotalChaos05/base16-schemes; flake = false; };
 
   outputs =
     { self, nixpkgs, home-manager, impermanence,# hyprland, 
-    emacs, nur,
+    emacs, nur, nur-comb,
       nixos-hardware, stylix,# base16-schemes,
       ... }@inputs:
     let
@@ -38,8 +39,18 @@ base16-schemes = { url = github:TotalChaos05/base16-schemes; flake = false; };
           modules = [
 	  nixos-hardware.nixosModules.lenovo-thinkpad-t480
             ./configuration.nix
+	    ./hardware-configuration.nix
           ];
         };
+	poggers = nixpkgs.lib.nixosSystem {
+          specialArgs = { inherit inputs outputs; };
+          modules = [
+	  nixos-hardware.nixosModules.lenovo-thinkpad-t480
+            ./configuration.nix
+	    ./poggers-hw.nix
+          ];
+        };
+
       };
 
       # Standalone home-manager configuration entrypoint
