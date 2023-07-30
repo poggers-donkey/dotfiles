@@ -217,6 +217,7 @@
     python3
     gotop
     brightnessctl
+    exa
   ];
 
   services.pipewire = {
@@ -406,6 +407,26 @@
         ungoogled-chromium
       ];
       home.homeDirectory = "/home/main";
+      programs.zsh = {
+        enableAutosuggestions = true;
+                oh-my-zsh = {
+          enable = true;
+          #plugins = [
+          #];
+          theme = "lambda";
+                };
+                        plugins = [
+          {
+            name = "zsh-syntax-highlighting";
+            src = pkgs.fetchFromGitHub {
+              owner = "zsh-users";
+              repo = "zsh-syntax-highlighting";
+              rev = "2d60a47cc407117815a1d7b331ef226aa400a344";
+              sha256 = "1pnxr39cayhsvggxihsfa3rqys8rr2pag3ddil01w96kw84z4id2";
+            };
+          }
+        ];
+      };
       programs.fzf = {
         enable = true;
         defaultCommand = "fd --type f -H";
