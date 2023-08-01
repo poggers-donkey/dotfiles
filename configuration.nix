@@ -442,7 +442,22 @@
         #systemd.enable=true;
         config = {
 	  bars = [];
-	  window.border = 1;
+	  window = {
+      border = 1;
+      commands = [
+        {
+          command = "max_render_time 1";
+          criteria = {
+            app_id = "emacs";
+          }; }
+
+        {
+          command = "max_render_time 1";
+          criteria = {
+            app_id = "foot";
+          }; }
+      ];
+    };
 	  floating = {
 	  border = 1;
           modifier = "${config.home-manager.users.main.wayland.windowManager.sway.config.modifier}";
