@@ -405,6 +405,7 @@
         ripgrep
         udiskie
         ungoogled-chromium
+        whatsapp-for-linux
       ];
       home.homeDirectory = "/home/main";
       programs.zsh = {
@@ -965,7 +966,9 @@
           "Pictures"
           ".config/discord"
           ".config/spotify"
+          ".config/whatsapp-for-linux"
           ".cache/spotify"
+          ".cache/whatsapp-for-linux"
 	  ".config/zsh"
           #".zotero"
           #".local/share/lutris"
