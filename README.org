@@ -1,5 +1,5 @@
 * Dotfiles
-The configuration for waybar and most of the UI was taken from [[waybar, was wlel][github:KubqoA/dotfiles]].
+The configuration for waybar and most of the UI was taken from [[https://github.com/KubqoA/dotfiles][github:KubqoA/dotfiles]].
 ** Some TODOs related to nix
 *** TODO Integrate emacs config into nix
 My ~init.el~ (not yet in the repo) is regularly edited, mainly for the $\LaTeX$ snippets, maybe make these an external package/file that is loaded and required?
