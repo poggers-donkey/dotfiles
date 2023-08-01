@@ -1,4 +1,5 @@
 * Dotfiles
+The configuration for waybar and most of the UI was taken from [[waybar, was wlel][github:KubqoA/dotfiles]].
 ** Some TODOs related to nix
 *** TODO Integrate emacs config into nix
 My ~init.el~ (not yet in the repo) is regularly edited, mainly for the $\LaTeX$ snippets, maybe make these an external package/file that is loaded and required?
@@ -11,6 +12,8 @@ For some reason, spotify doesn't store login cookies in ~.config/spotify~ or ~.c
 *** TODO Fix sway using ~Mod1~
 Migrating sway config to ~home-manager~ has broken my use of ~Mod1~ in various keybinds, look into fixing.
 
+*** TODO Test configurations using ~nixos-rebuild build-vm~
+Doesn't work properly right now so files related to the vm are not staged.
 ** Some general TODOs
 *** TODO Less hacky solution for math snippets
 Current solution is to have every snippet defined in a function that takes the major mode as an argument. To load new snippets, evaluate the function and then run the function for the respective mode. Takes too much effort, find better way.
