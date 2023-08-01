@@ -456,7 +456,14 @@
           command = "max_render_time 1";
           criteria = {
             app_id = "foot";
-          }; }
+          };
+        }
+        {
+          command = "floating enable";
+          criteria = {
+            title = "volumecontrol";
+          };
+        }
       ];
     };
 	  floating = {
@@ -564,7 +571,7 @@
             "Mod1+j" = "wtype -P down";
             "Mod1+k" = "wtype -P up";
             "Mod1+l" = "wtype -P right";
-            "${mod}+p" = ''exec 'foot --title="sneed" -e pulsemixer'';
+            "${mod}+p" = ''exec 'foot --title="volumecontrol" -e pulsemixer'';
             "${mod}+Shift+o" = ''exec 'emacsclient -c -e "(org-anywhere)"'';
             "${mod}+o" = ''exec 'emacsclient -c -e "(switch-to-buffer nil)"'';
             "${mod}+Mod1+o" = "chromium --new-window --app=http://127.0.0.1";
