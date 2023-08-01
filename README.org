@@ -1,0 +1,16 @@
+* Dotfiles
+** Some TODOs related to nix
+*** TODO Integrate emacs config into nix
+My ~init.el~ (not yet in the repo) is regularly edited, mainly for the $\LaTeX$ snippets, maybe make these an external package/file that is loaded and required?
+*** TODO Organise state cleanly, set up some way to transfer it cleanly between machines (rsync?)
+Useful for various PDFs that can't be reproducibly grabbed from their sources.
+*** TODO Sync various git repos on boot, clone if they don't exist
+Not sure how to go about this. Notes are synced using git to a private repo, maybe just leave as state and deal with manually?
+*** TODO Fix spotify
+For some reason, spotify doesn't store login cookies in ~.config/spotify~ or ~.cache/spotify~. Login is done through default browser (ungoogled-chromium on my machine), maybe persist that cache? Bloated solution. Split state into useful and convenient (e.g. spotify login in convenience, documents in useful) for things that resist persistence. If this is done, maybe set up similar for ~dark-reader~ extension (configuration of colour scheme cannot be done declaratively).
+*** TODO Fix sway using ~Mod1~
+Migrating sway config to ~home-manager~ has broken my use of ~Mod1~ in various keybinds, look into fixing.
+
+** Some general TODOs
+*** TODO Less hacky solution for math snippets
+Current solution is to have every snippet defined in a function that takes the major mode as an argument. To load new snippets, evaluate the function and then run the function for the respective mode. Takes too much effort, find better way.
